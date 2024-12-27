@@ -40,6 +40,29 @@ func FindProducts() []Produto {
 	return produtos
 }
 
+func FindOneProduct(id string) Produto {
+	db := db.ConnectDB()
+
+	productQuery, err := db.Prepare("SELECT * FROM produtos WHERE id = ?")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	query := productQuery.QueryRow(id)
+
+	var produto Produto
+
+	query.Scan(&produto.Id, &produto.Nome, &produto.Descricao, &produto.Preco, &produto.Quantidade)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer db.Close()
+	return produto
+}
+
 func InsertProdutos(produto Produto) sql.Result {
 	db := db.ConnectDB()
 
@@ -52,6 +75,19 @@ func InsertProdutos(produto Produto) sql.Result {
 
 	defer db.Close()
 	return res
+}
+
+func UpdateProduto(produto Produto) {
+	db := db.ConnectDB()
+
+	query, err := db.Prepare(`UPDATE produtos SET nome = ?, descricao = ?, preco = ?, quantidade = ? WHERE id = ?`)
+
+	if err != nil {
+		panic(err.Error())
+	}
+	query.Exec(produto.Nome, produto.Descricao, produto.Preco, produto.Quantidade, produto.Id)
+
+	defer db.Close()
 }
 
 func DeletarProduto(idProduto string) {
