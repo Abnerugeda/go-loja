@@ -1,4 +1,4 @@
-module loja
+module github.com/Abnerugeda/go-loja
 
 go 1.23.2
 
