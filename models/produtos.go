@@ -1,6 +1,11 @@
 package models
 
-import "github.com/Abnerugeda/go-loja/db"
+import (
+	"database/sql"
+	"fmt"
+
+	"github.com/Abnerugeda/go-loja/db"
+)
 
 type Produto struct {
 	Id         int
@@ -33,4 +38,18 @@ func FindProducts() []Produto {
 	}
 	defer db.Close()
 	return produtos
+}
+
+func InsertProdutos(produto Produto) sql.Result {
+	db := db.ConnectDB()
+
+	res, err := db.Exec(fmt.Sprintf(`INSERT INTO produtos (nome, descricao, preco, quantidade)
+						VAlUES ('%s', '%s', %f, %d)`, produto.Nome, produto.Descricao, produto.Preco, produto.Quantidade))
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer db.Close()
+	return res
 }
