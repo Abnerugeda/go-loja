@@ -32,27 +32,43 @@
                 <th>Descrição</th>
                 <th>Preço</th>
                 <th>Quantidade</th>
+                <th>Ações</th>
               </tr>
             </thead>
             <tbody>
-                {{range .}}
-                <tr>
-                    <td>{{.Nome}}</td>
-                    <td>{{.Descricao}}</td>
-                    <td>{{.Preco}}</td>
-                    <td>{{.Quantidade}}</td>
-                </tr>
-                {{end}}
+              {{range .}}
+              <tr>
+                <td>{{.Nome}}</td>
+                <td>{{.Descricao}}</td>
+                <td>{{.Preco}}</td>
+                <td>{{.Quantidade}}</td>
+                <td>
+                  <button onclick="onDelete('{{.Id}}')" class="btn btn-danger">
+                    Deletar
+                  </button>
+                </td>
+              </tr>
+              {{end}}
             </tbody>
           </table>
         </div>
       </section>
       <div class="card-footer">
-        <a href="/new" class="btn btn-primary mb-2">
-          Criar novo produto
-        </a>
+        <a href="/new" class="btn btn-primary mb-2"> Criar novo produto </a>
       </div>
     </div>
   </body>
-</html> 
+</html>
+
+<script>
+
+  function onDelete(id){
+    let resposta = confirm("Tem certeza que deseja deletar esse produto?")
+
+    if(resposta){
+      window.location = `/delete?id=${id}`
+    }
+  }
+
+</script>
 {{end}}

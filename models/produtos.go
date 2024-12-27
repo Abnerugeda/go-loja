@@ -53,3 +53,17 @@ func InsertProdutos(produto Produto) sql.Result {
 	defer db.Close()
 	return res
 }
+
+func DeletarProduto(idProduto string) {
+	db := db.ConnectDB()
+
+	delete, err := db.Prepare("DELETE FROM produtos WHERE id=?")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	delete.Exec(idProduto)
+
+	defer db.Close()
+}
