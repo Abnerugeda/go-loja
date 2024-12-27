@@ -1,5 +1,7 @@
 package models
 
+import "github.com/Abnerugeda/go-loja/db"
+
 type Produto struct {
 	Id         int
 	Nome       string
@@ -8,8 +10,8 @@ type Produto struct {
 	Quantidade int
 }
 
-func findProducts() []Produto {
-	db := ConnectDB()
+func FindProducts() []Produto {
+	db := db.ConnectDB()
 	allProducts, err := db.Query("SELECT * FROM produtos")
 
 	if err != nil {
@@ -29,6 +31,6 @@ func findProducts() []Produto {
 
 		produtos = append(produtos, p)
 	}
-	defer db.close()
+	defer db.Close()
 	return produtos
 }
